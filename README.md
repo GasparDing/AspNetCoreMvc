@@ -1,5 +1,5 @@
 # ASP.NET Core MVC and Entity Framework Core
-在Visual Studio 的環境下使用 ASP.NET Core MVC 以及 Entity Framework Core 的入門官方教學專案
+在 Visual Studio 的環境下使用 ASP.NET Core MVC 以及 Entity Framework Core 的入門官方教學專案 
 Getting started with ASP.NET Core MVC and Entity Framework Core using Visual Studio .
 
 開發工具 (IDE)：Visual Studio 2017
