@@ -41,7 +41,7 @@ namespace ContosoUniversity.Controllers
             // When context loads also "Students.Enrollments" navigation property in "Students"
             // and "Enrollments.Course" navigation property in each "Enrollments".
             // We'll learn more about these methods in the reading related data tutorial.
-            
+
             // todo
             // The AsNoTracking method improves performance in scenarios where the entities returned 
             // won't be updated in the current context's lifetime. You'll learn more about AsNoTracking at the end of this tutorial.
@@ -65,14 +65,32 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,LastName,FirstMidName,EnrollmentDate")] Student student)
-        {
-            if (ModelState.IsValid)
+        public async Task<IActionResult> Create([Bind("LastName,FirstMidName,EnrollmentDate")] Student student)
+        { 
+            // Use Bind attribute to specific the fields that you want to insert into the database.
+            // So it can prevnt that hacker try to add some column field which you don't want user edit.
+
+            // Another way is the use of "viewmodel" instead of entity.
+            // So we can custom the values we want to add/edit.
+            // And increase the security by using server-side code to CRUD the database.
+
+            try
             {
-                _context.Add(student);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(student);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (DbUpdateException /*ex*/)
+            {
+                //Log the error (uncomment ex vaiable name and write a log.)
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
+
             return View(student);
         }
 
